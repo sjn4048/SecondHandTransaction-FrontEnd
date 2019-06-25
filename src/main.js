@@ -23,17 +23,17 @@ const router = new VueRouter({
   routes: routers
 })
 
-// router.beforeEach((to, from, next) => {
-//   let token = window.localStorage.getItem('token')
-//   if (to.matched.some(record => record.meta.requiresAuth) && (!token || token === null)) {
-//     next({
-//       path: '/login',
-//       query: { redirect: to.fullPath }
-//     })
-//   } else {
-//     next()
-//   }
-// })
+router.beforeEach((to, from, next) => {
+  let token = window.localStorage.getItem('token')
+  if (to.matched.some(record => record.meta.requiresAuth) && !token) {
+    next({
+      path: '/login',
+      query: { redirect: to.fullPath }
+    })
+  } else {
+    next()
+  }
+})
 
 /* eslint-disable no-new */
 new Vue({

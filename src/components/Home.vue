@@ -6,7 +6,21 @@
     >
       <a-form-item
         v-bind="formItemLayout"
-        label="E-mail"
+        label="用户名"
+      >
+        <a-input
+          v-decorator="[
+              'username',
+              {
+                rules: [{ required: true, messageBrief: 'Please input your username!', whitespace: true }]
+              }
+            ]"
+        >
+        </a-input>
+      </a-form-item>
+      <a-form-item
+        v-bind="formItemLayout"
+        label="邮箱"
       >
         <a-input
           v-decorator="[
@@ -18,28 +32,13 @@
                   required: true, messageBrief: 'Please input your E-mail!',
                 }]
               }
-            ]"></a-input>
+            ]"
+        ></a-input>
       </a-form-item>
+
       <a-form-item
         v-bind="formItemLayout"
-      >
-          <span slot="label">
-            Username&nbsp;
-            <a-tooltip title="You will use this name to log in, and this name will be displayed to others.">
-              <a-icon type="question-circle-o"></a-icon>
-            </a-tooltip>
-          </span>
-        <a-input
-          v-decorator="[
-              'username',
-              {
-                rules: [{ required: true, messageBrief: 'Please input your username!', whitespace: true }]
-              }
-            ]"></a-input>
-      </a-form-item>
-      <a-form-item
-        v-bind="formItemLayout"
-        label="Password"
+        label="原密码"
       >
         <a-input
           v-decorator="[
@@ -56,17 +55,12 @@
       </a-form-item>
       <a-form-item
         v-bind="formItemLayout"
-        label="Confirm Password"
+        label="修改密码"
       >
         <a-input
           v-decorator="[
               'confirm',
               {
-                rules: [{
-                  required: true, messageBrief: 'Please confirm your password!',
-                }, {
-                  validator: compareToFirstPassword,
-                }],
               }
             ]"
           type="password"
@@ -74,13 +68,13 @@
       </a-form-item>
       <a-form-item
         v-bind="formItemLayout"
-        label="Habitual Residence"
+        label="居住地点"
       >
         <a-cascader
           v-decorator="[
               'residence',
               {
-                initialValue: ['zhejiang', 'hangzhou', 'xihu'],
+                initialValue: ['zhejiang', 'hangzhou', 'zijingang'],
                 rules: [{ type: 'array', required: true, messageBrief: 'Please select your habitual residence!' }],
               }
             ]"
@@ -89,7 +83,7 @@
       </a-form-item>
       <a-form-item
         v-bind="formItemLayout"
-        label="Phone Number"
+        label="手机号"
       >
         <a-input
           v-decorator="[
@@ -117,22 +111,22 @@
           </a-select>
         </a-input>
       </a-form-item>
-      <a-form-item v-bind="tailFormItemLayout">
-        <a-checkbox
-          v-decorator="['agreement', {valuePropName: 'checked'}]"
-          :checked="checkAgreement"
-          @change="handleChange"
-        >
-          I have agreed to register and follow rules here!
-        </a-checkbox>
+      <a-form-item
+        v-bind="formItemLayout"
+        label="运送模式"
+      >
+        <a-checkbox-group :options="sendOptions" @change="onCheckboxChange" v-decorator="[
+            'send',
+            {
+            }
+          ]"></a-checkbox-group>
       </a-form-item>
       <a-form-item v-bind="tailFormItemLayout">
         <a-button
           type="primary"
           html-type="submit"
-          :disabled="!checkAgreement"
         >
-          注册
+          修改
         </a-button>
       </a-form-item>
     </a-form>
@@ -147,20 +141,21 @@
 </template>
 
 <script>
-  import {register} from '@/api/api'
+  import {userHome} from '@/api/api'
+  const sendOptions = ['邮寄运送', '线下交易']
 
   const residences = [{
     value: 'zhejiang',
-    label: 'Zhejiang',
+    label: '浙江',
     children: [{
       value: 'hangzhou',
-      label: 'Hangzhou',
+      label: '杭州',
       children: [{
         value: 'zijingang',
-        label: 'Zijingang Campus, ZJU'
+        label: '浙江大学 紫金港校区'
       }, {
         value: 'yuquan',
-        label: 'Yuquan Campus, ZJU'
+        label: '浙江大学 玉泉校区'
       }]
     }]
   }]
@@ -172,7 +167,10 @@
         messageDetail: null,
         success: null,
         confirmDirty: false,
+        currentInfo: null,
+        checkedList: null,
         residences,
+        sendOptions,
         autoCompleteResult: [],
         formItemLayout: {
           labelCol: {
@@ -201,6 +199,18 @@
     beforeCreate () {
       this.form = this.$form.createForm(this)
     },
+    created () {
+      userHome()
+        .then(res => {
+          this.currentInfo = res
+          this.form.setFieldsValue({username: res.username,
+                                    email: res.email,
+                                    residence: ['zhejiang', 'hangzhou', res.residence],
+                                    phone: res.phone_number})
+        }).catch(error => {
+          console.log(error)
+        })
+    },
     computed: {
       displayMessage: function () {
         return this.success !== null
@@ -217,35 +227,16 @@
         e.preventDefault()
         this.form.validateFieldsAndScroll((err, values) => {
           if (!err) {
-            console.log('Received values of form: ', values)
-            register(values)
-              .then(res => {
-                if (res.status === 1) {
-                  this.success = true
-                  this.messageDetail = res.msg
-                  setTimeout(this.registerSuccess, 500)
-                } else {
-                  // 登录失败
-                  this.success = false
-                  this.messageDetail = res.msg
-                }
-              }).catch(error => {
-                console.log(error)
-              })
+            console.log(values)
           }
         })
+      },
+      onCheckboxChange (checkedList) {
+        console.log(checkedList)
       },
       handleConfirmBlur  (e) {
         const value = e.target.value
         this.confirmDirty = this.confirmDirty || !!value
-      },
-      compareToFirstPassword  (rule, value, callback) {
-        const form = this.form
-        if (value && value !== form.getFieldValue('password')) {
-          callback(new Error('Two passwords that you enter are inconsistent!'))
-        } else {
-          callback()
-        }
       },
       validateToNextPassword  (rule, value, callback) {
         const form = this.form

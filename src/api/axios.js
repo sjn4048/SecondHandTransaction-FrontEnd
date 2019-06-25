@@ -7,14 +7,13 @@ let baseApi = 'http://127.0.0.1:5000'
 
 axios.defaults.timeout = 10000
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
-axios.defaults.auth = {
-  username: '',
-  password: ''
-}
 
 // 添加request拦截器
 axios.interceptors.request.use(
   config => {
+    if (window.localStorage.token) {
+      config.headers.Authorization = 'token ' + window.localStorage.token
+    }
     return config
   },
   error => {
@@ -24,21 +23,18 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
   response => {
-    if (response.status === 200) {
-      //   return Promise.resolve(response)
-      return response
-    } else {
-      return Promise.reject(response)
-    }
+    return response
   },
   error => {
-    // if (error.response) {
-    //   switch (error.response.status) {
-    //     case 401:
-    //       store.commit('del_token')
-    //       router.push('/login')
-    //   }
-    // }
+    if (error.response) {
+      switch (error.response.status) {
+      case 401:
+        console.log('Login Required!')
+        break
+
+      default:
+      }
+    }
     return Promise.reject(error)
   }
 )
@@ -62,7 +58,7 @@ export function post (url, params) {
  */
 export function get (url, params = {}) {
   return new Promise((resolve, reject) => {
-    axios.get(`${baseApi}url`, {
+    axios.get(`${baseApi}${url}`, {
       params: params
     }).then(res => {
       resolve(res.data)

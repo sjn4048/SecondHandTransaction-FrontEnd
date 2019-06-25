@@ -67,7 +67,7 @@
       >
         Log in
       </a-button>
-      Or <a href="Register.vue">
+      Or <a href="/register">
       register now!
     </a>
     </a-form-item>
@@ -145,6 +145,8 @@
                 // 登陆成功
                 this.success = true
                 this.messageDetail = res.msg
+                window.localStorage['token'] = res.token
+                console.log(res.token)
                 setTimeout(this.logInSuccess, 500)
               } else {
                 // 登录失败

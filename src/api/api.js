@@ -20,12 +20,17 @@ export const logOut = () => get('/logout')
 /**
  * 首页
  */
-export const arena = () => get('/arena')
+export const getArena = () => get('/arena')
 
 /**
  * 个人信息
  */
 export const userinfo = idx => get('/user/' + idx)
+
+/**
+ * 个人主页
+ */
+export const userHome = () => get('/home')
 
 /**
  * 发布书籍
@@ -45,14 +50,24 @@ export const uploadUrl = `${baseUrl}/upload`
 /**
  * 购买书籍
  */
-export const buyBook = data => get('/buy', data)
+export const buyBook = data => post('/buy', data)
 
 /**
  * 书籍详情
  */
-export const bookInfo = data => get('/detail', data)
+export const bookInfo = id => get(`/detail/${id}`)
 
 /**
  * 求购
  */
 export const wantBook = data => post('/want', data)
+
+/**
+ * 发送消息
+ */
+export const sendMessage = data => post('/send', data)
+
+/**
+ * 查看消息
+ */
+export const getMessage = data => get('/box', data)
