@@ -59,7 +59,7 @@
       >
         <a-input
           v-decorator="[
-              'confirm',
+              'new_password',
               {
               }
             ]"
@@ -141,7 +141,7 @@
 </template>
 
 <script>
-  import {userHome} from '@/api/api'
+  import {changeInfo, userHome} from '@/api/api'
   const sendOptions = ['邮寄运送', '线下交易']
 
   const residences = [{
@@ -206,7 +206,8 @@
           this.form.setFieldsValue({username: res.username,
                                     email: res.email,
                                     residence: ['zhejiang', 'hangzhou', res.residence],
-                                    phone: res.phone_number})
+                                    phone: res.phone_number,
+                                    send: [res.delivery, res.face2face]})
         }).catch(error => {
           console.log(error)
         })
@@ -227,7 +228,23 @@
         e.preventDefault()
         this.form.validateFieldsAndScroll((err, values) => {
           if (!err) {
+            values['delivery'] = values.send.includes(sendOptions[0])
+            values['face2face'] = values.send.includes(sendOptions[1])
             console.log(values)
+            changeInfo(values).then(res => {
+              if (res.status === 1) {
+                this.success = true
+                this.messageDetail = res.msg
+                setTimeout(this.changeSuccess, 500)
+              } else {
+                // 登录失败
+                this.success = false
+                this.messageDetail = res.msg
+              }
+            }).catch(error => {
+              console.log(error)
+            }
+            )
           }
         })
       },
@@ -245,8 +262,7 @@
         }
         callback()
       },
-      registerSuccess () {
-        this.$router.push('/login')
+      changeSuccess () {
       },
       handleChange (e) {
         this.checkAgreement = e.target.checked

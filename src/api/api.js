@@ -71,3 +71,8 @@ export const sendMessage = data => post('/send', data)
  * 查看消息
  */
 export const getMessage = data => get('/box', data)
+
+/**
+ * 修改信息
+ */
+export const changeInfo = data => post('/home/change', data)

@@ -10,7 +10,7 @@
           <a-input
             v-decorator="[
               'userName',
-              {rules: [{ required: true, messageBrief: '请输入接收者id' }]}
+              {rules: [{ required: true, messageBrief: '请输入接收者用户名' }]}
             ]"
             type="text"
             placeholder="Username"
@@ -43,10 +43,16 @@
         </a-form-item>
       </div>
     </a-comment>
+    <a-alert
+      v-if=displayMessage
+      :message=messageBrief
+      :description=messageDetail
+      :type=messageType
+      showIcon>
+    </a-alert>
   </div>
 </template>
 <script>
-  import moment from 'moment'
   import {sendMessage} from '@/api/api'
   export default {
     data () {
@@ -54,34 +60,59 @@
         comments: [],
         submitting: false,
         content: '',
-        targetUser: '',
-        moment
+        receiver: '',
+        messageDetail: null,
+        success: null
+      }
+    },
+    computed: {
+      displayMessage: function () {
+        return this.success !== null
+      },
+      messageBrief: function () {
+        return this.success ? 'Success' : 'Failed'
+      },
+      messageType: function () {
+        return this.success ? 'success' : 'error'
       }
     },
     methods: {
       handleSubmit () {
-        if (!this.content || !this.targetUser) {
+        if (!this.content || !this.receiver) {
           return
         }
         this.submitting = true
 
         setTimeout(() => {
           sendMessage({
-            receiver: this.targetUser,
-            message: this.content
+            receiver: this.receiver,
+            content: this.content
           }).then(res => {
             console.log(res)
-            this.submitting = false
+            if (res.status === 1) {
+              this.success = true
+              this.messageDetail = res.msg
+              this.submitting = false
+              setTimeout(this.sendSuccess, 500)
+            } else {
+              // 发送失败
+              this.success = false
+              this.messageDetail = res.msg
+              this.submitting = false
+            }
           }).catch(err => {
             console.log(err)
           })
         }, 500)
       },
+      sendSuccess () {
+        this.$router.push('/message/box')
+      },
       handleContentChange (e) {
         this.content = e.target.value
       },
       handleUserChange (e) {
-        this.targetUser = e.target.value
+        this.receiver = e.target.value
       }
     }
   }
