@@ -25,6 +25,7 @@
 <script>
   import sidebar from '@/components/Sidebar'
   import {getArena} from '@/api/api'
+
   export default {
     name: 'Arena',
     data () {
@@ -34,6 +35,7 @@
         spinning: true,
         showLoadingMore: true,
         bookData: null,
+        pageNo: 0,
         msg: null
       }
     },
@@ -53,10 +55,16 @@
         })
       },
       onLoadMore: function () {
-        getArena().then(res => {
+        getArena({
+          page: this.pageNo
+        }).then(res => {
           this.loadingMore = true
           this.loading = false
-          this.bookData = this.bookData.concat(res)
+          if (res.length !== 0) {
+            // 返回值非空
+            this.pageNo += 1
+            this.bookData = this.bookData.concat(res)
+          }
           this.loadingMore = false
         }).catch(error => {
           console.log(error)

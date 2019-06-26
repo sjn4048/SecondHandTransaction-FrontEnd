@@ -4,13 +4,14 @@
     :header="`${allMessages.length} messages`"
     itemLayout="horizontal"
     :dataSource="allMessages"
+    style="text-align: center;"
   >
     <a-list-item slot="renderItem" slot-scope="item, index">
       <a-comment
-        :author="item.sender_id"
+        :author="item.sender_name"
       >
-        <p slot="content">{{item.content}}</p>
-        <a-tooltip slot="datetime" title="item.timestamp.format('YYYY-MM-DD HH:mm:ss')">
+        <p slot="content" style="text-align: left">{{item.content}}</p>
+        <a-tooltip slot="datetime" :title="item.timestamp.format('YYYY-MM-DD HH:mm:ss')">
           <span>{{item.timestamp.fromNow()}}</span>
         </a-tooltip>
       </a-comment>

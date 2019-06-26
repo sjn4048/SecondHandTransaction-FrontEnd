@@ -1,11 +1,10 @@
 <template>
   <div>
     <a-comment>
-      <div slot="content">
+      <div slot="content" style="text-align: center">
         <a-form-item
           label="接收者"
-          :label-col="{ span: 5 }"
-          :wrapper-col="{ span: 12 }"
+          v-bind="formItemLayout"
         >
           <a-input
             v-decorator="[
@@ -25,8 +24,7 @@
         </a-form-item>
         <a-form-item
           label="消息内容"
-          :label-col="{ span: 5 }"
-          :wrapper-col="{ span: 12 }"
+          v-bind="formItemLayout"
         >
           <a-textarea :rows="4" @change="handleContentChange" :value="content">
           </a-textarea>
@@ -54,6 +52,7 @@
 </template>
 <script>
   import {sendMessage} from '@/api/api'
+  import global from '@/components/GlobalStyle'
   export default {
     data () {
       return {
@@ -62,7 +61,9 @@
         content: '',
         receiver: '',
         messageDetail: null,
-        success: null
+        success: null,
+        formItemLayout: global.formItemLayout,
+        tailFormItemLayout: global.tailFormItemLayout
       }
     },
     computed: {

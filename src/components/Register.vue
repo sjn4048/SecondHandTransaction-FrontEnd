@@ -3,6 +3,8 @@
     <a-form
       :form="form"
       @submit="handleSubmit"
+      id="components-form-login"
+      style="text-align: center;"
     >
       <a-form-item
         v-bind="formItemLayout"
@@ -117,7 +119,7 @@
           </a-select>
         </a-input>
       </a-form-item>
-      <a-form-item v-bind="tailFormItemLayout">
+      <a-form-item v-bind="tailFormItemLayout" style="text-align: center">
         <a-checkbox
           v-decorator="['agreement', {valuePropName: 'checked'}]"
           :checked="checkAgreement"
@@ -148,6 +150,7 @@
 
 <script>
   import {register} from '@/api/api'
+  import global from '@/components/GlobalStyle'
 
   const residences = [{
     value: 'zhejiang',
@@ -174,28 +177,9 @@
         confirmDirty: false,
         residences,
         autoCompleteResult: [],
-        formItemLayout: {
-          labelCol: {
-            xs: { span: 24 },
-            sm: { span: 8 }
-          },
-          wrapperCol: {
-            xs: { span: 24 },
-            sm: { span: 16 }
-          }
-        },
-        tailFormItemLayout: {
-          wrapperCol: {
-            xs: {
-              span: 24,
-              offset: 0
-            },
-            sm: {
-              span: 16,
-              offset: 8
-            }
-          }
-        }
+        // global
+        formItemLayout: global.formItemLayout,
+        tailFormItemLayout: global.tailFormItemLayout
       }
     },
     beforeCreate () {

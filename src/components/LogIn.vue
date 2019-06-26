@@ -1,20 +1,19 @@
-<template>
+<template id="components-form-login">
   <a-form
-    id="components-form-login"
     :form="form"
     class="login-form"
     @submit="handleLogin"
+    style="text-align: center;"
   >
     <a-form-item
       label="Username"
-      :label-col="{ span: 5 }"
-      :wrapper-col="{ span: 12 }"
+      v-bind="formItemLayout"
       :validate-status="userNameError() ? 'error' : ''"
       :help="userNameError() || ''"
     >
       <a-input
         v-decorator="[
-          'userName',
+          'username',
           {rules: [{ required: true, messageBrief: 'Please input your username!' }]}
         ]"
         type="text"
@@ -29,10 +28,8 @@
     </a-form-item>
     <a-form-item
       label="Password"
-      :label-col="{ span: 5 }"
-      :wrapper-col="{ span: 12 }"
-      :validate-status="passwordError() ? 'error' : ''"
-      :help="passwordError() || ''"
+      v-bind="formItemLayout"
+      :validate-="passwordError() ? 'error' : ''"
     >
       <a-input
         v-decorator="[
@@ -49,6 +46,7 @@
       </a-input>
     </a-form-item>
     <a-form-item>
+      <div>
       <a-checkbox
         v-decorator="[
           'remember',
@@ -60,16 +58,21 @@
       >
         Remember me
       </a-checkbox>
+      </div>
       <a-button
         type="primary"
         html-type="submit"
         class="login-form-button"
+        style="width: 20%"
+        :compact=true
       >
         Log in
       </a-button>
+      <div>
       Or <a href="/register">
       register now!
-    </a>
+      </a>
+      </div>
     </a-form-item>
     <a-alert
       v-if=displayMessage
@@ -83,14 +86,11 @@
 
 <script>
   import {logIn} from '@/api/api'
+  import global from '@/components/GlobalStyle'
 
   function hasErrors (fieldsError) {
     return Object.keys(fieldsError).some(field => fieldsError[field])
   }
-
-  // function sleep (ms) {
-  //   return new Promise(resolve => setTimeout(resolve, ms))
-  // }
 
   export default {
     name: 'login',
@@ -99,7 +99,9 @@
         hasErrors,
         messageDetail: null,
         success: null,
-        form: this.$form.createForm(this)
+        form: this.$form.createForm(this),
+        formItemLayout: global.formItemLayout,
+        tailFormItemLayout: global.tailFormItemLayout
       }
     },
     mounted () {
@@ -125,7 +127,7 @@
       },
       userNameError () {
         const { getFieldError, isFieldTouched } = this.form
-        return isFieldTouched('userName') && getFieldError('userName')
+        return isFieldTouched('username') && getFieldError('username')
       },
       // Only show error after a field is touched.
       passwordError () {
@@ -138,7 +140,7 @@
           if (!err) {
             console.log('Received values of form: ', values)
             logIn({
-              username: values.userName,
+              username: values.username,
               password: values.password
             }).then(res => {
               if (res.status === 1) {

@@ -6,6 +6,21 @@
     <a-layout-sider :theme="theme"
                     :collapsible=true
     >
+      <div style="text-align: center; width: 100%">
+        <a-icon
+          slot="prefix"
+          type="bulb"
+          style="color:rgba(0,0,0,.25); font-size: 25px; position: relative; top: 50%; transform: translateY(50%);">
+        </a-icon>
+      <a-switch
+        @change="changeTheme"
+        checkedChildren="dark"
+        unCheckedChildren="light"
+        style="position: relative; top: 50%; transform: translateY(50%);"
+      >
+      </a-switch>
+      </div>
+      <a-divider type="horizontal"></a-divider>
       <a-menu
         @click="handleClick"
         :defaultSelectedKeys="['1']"
@@ -13,13 +28,6 @@
         mode="inline"
         :theme="theme"
       >
-        <a-switch
-          @change="changeTheme"
-          checkedChildren="check"
-          unCheckedChildren="light"
-          style=""
-        >
-        </a-switch>
         <a-sub-menu key="sub1" @titleClick="titleClick">
           <span slot="title"><span><a-icon type="shop"></a-icon>买卖书籍</span></span>
           <a-menu-item-group key="g1">
