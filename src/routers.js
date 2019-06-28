@@ -5,15 +5,20 @@ import Register from '@/components/Register'
 import About from '@/components/About'
 import SendMessage from '@/components/SendMessage'
 import MessageBox from '@/components/MessageBox'
-import Manage from '@/components/Manage'
 import Buy from '@/components/Buy'
 import WantBook from '@/components/WantBook'
 import Home from '@/components/Home'
+import Orders from '@/components/Orders'
+import WantBooks from '@/components/WantBooks'
 
 const routers = [
   {
     path: '/',
-    component: LogIn
+    name: 'index',
+    component: Arena,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/login',
@@ -60,8 +65,8 @@ const routers = [
     }
   },
   {
-    path: '/manage',
-    component: Manage,
+    path: '/home/order',
+    component: Orders,
     meta: {
       requiresAuth: true
     }
@@ -83,6 +88,13 @@ const routers = [
   {
     path: '/home',
     component: Home,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/home/want',
+    component: WantBooks,
     meta: {
       requiresAuth: true
     }

@@ -6,7 +6,7 @@
     style="text-align: center;"
   >
     <a-form-item
-      label="Username"
+      label="用户名"
       v-bind="formItemLayout"
       :validate-status="userNameError() ? 'error' : ''"
       :help="userNameError() || ''"
@@ -17,7 +17,7 @@
           {rules: [{ required: true, messageBrief: 'Please input your username!' }]}
         ]"
         type="text"
-        placeholder="Username"
+        placeholder="输入用户名"
       >
         <a-icon
           slot="prefix"
@@ -27,7 +27,7 @@
       </a-input>
     </a-form-item>
     <a-form-item
-      label="Password"
+      label="密码"
       v-bind="formItemLayout"
       :validate-="passwordError() ? 'error' : ''"
     >
@@ -37,7 +37,7 @@
           {rules: [{ required: true, messageBrief: 'Please input your password!' }]}
         ]"
         type="password"
-        placeholder="Password"
+        placeholder="输入密码"
       >
         <a-icon
           slot="prefix"
@@ -56,21 +56,20 @@
           }
         ]"
       >
-        Remember me
+        记住我
       </a-checkbox>
       </div>
       <a-button
         type="primary"
         html-type="submit"
         class="login-form-button"
-        style="width: 20%"
         :compact=true
       >
-        Log in
+        登录
       </a-button>
       <div>
-      Or <a href="/register">
-      register now!
+      或 <a href="/register">
+      加入我们!
       </a>
       </div>
     </a-form-item>
@@ -148,6 +147,7 @@
                 this.success = true
                 this.messageDetail = res.msg
                 window.localStorage['token'] = res.token
+                window.localStorage['username'] = values.username
                 console.log(res.token)
                 setTimeout(this.logInSuccess, 500)
               } else {

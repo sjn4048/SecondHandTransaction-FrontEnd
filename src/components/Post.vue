@@ -56,7 +56,7 @@
         v-bind="formItemLayout"
         label="类别"
       >
-        <a-select defaultValue="文化" style="width: 120px" @change="handleCategoryChange"
+        <a-select defaultValue="culture" style="width: 120px" @change="handleCategoryChange"
                   v-decorator="[
                       'category',
                        {
@@ -65,13 +65,13 @@
                         }]
                    }
           ]">
-          <a-select-option value="文化">文化</a-select-option>
-          <a-select-option value="生活">生活</a-select-option>
-          <a-select-option value="历史">历史</a-select-option>
-          <a-select-option value="科幻">科幻</a-select-option>
-          <a-select-option value="教辅">教辅</a-select-option>
-          <a-select-option value="爱情">爱情</a-select-option>
-          <a-select-option value="经典">经典</a-select-option>
+            <a-select-option value="culture">文化</a-select-option>
+            <a-select-option value="life">生活</a-select-option>
+            <a-select-option value="history">历史</a-select-option>
+            <a-select-option value="sci-fi">科幻</a-select-option>
+            <a-select-option value="textbook">教辅</a-select-option>
+            <a-select-option value="love">爱情</a-select-option>
+            <a-select-option value="classic">经典</a-select-option>
         </a-select>
       </a-form-item>
       <a-form-item

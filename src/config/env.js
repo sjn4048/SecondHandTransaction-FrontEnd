@@ -11,8 +11,8 @@ let routerMode = 'hash'
 let baseImgPath
 
 if (process.env.NODE_ENV === 'development') {
-  baseUrl = ''
-  baseImgPath = '/img/'
+  // baseUrl = ''
+  // baseImgPath = '/img/'
 } else {
 }
 

@@ -44,10 +44,10 @@
       >
         <a-input
           v-decorator="[
-              'sale_price',
+              'expect_price',
               {
                 rules: [{
-                  required: true, messageBrief: '请输入现价！'
+                  required: true, messageBrief: '请输入价格！'
                  }]
               }
             ]"></a-input>

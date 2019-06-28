@@ -5,74 +5,89 @@ import {baseUrl} from '@/config/env'
 /**
  * 登录
  */
-export const logIn = data => post('/login', data)
+export const logIn = data => post('/api/login', data)
 
 /**
  * 注册
  */
-export const register = data => post('/register', data)
+export const register = data => post('/api/register', data)
 
 /**
  * 退出
  */
-export const logOut = () => get('/logout')
+export const logOut = () => get('/api/logout')
 
 /**
  * 首页
  */
-export const getArena = () => get('/arena')
+export const getArena = (data) => get('/api/arena', data)
 
 /**
  * 个人信息
  */
-export const userinfo = idx => get('/user/' + idx)
+export const userinfo = idx => get('/api/user/' + idx)
 
 /**
  * 个人主页
  */
-export const userHome = () => get('/home')
+export const userHome = () => get('/api/home')
 
 /**
  * 发布书籍
  */
-export const postBook = data => post('/post', data)
+export const postBook = data => post('/api/post', data)
 
 /**
  * 上传图片
  */
-export const uploadFile = data => post('/upload', data)
+export const uploadFile = data => post('/api/upload', data)
 
 /**
  * 上传图片地址
  */
-export const uploadUrl = `${baseUrl}/upload`
+export const uploadUrl = `${baseUrl}/api/upload`
 
 /**
  * 购买书籍
  */
-export const buyBook = data => post('/buy', data)
+export const buyBook = data => post('/api/buy', data)
 
 /**
  * 书籍详情
  */
-export const bookInfo = id => get(`/detail/${id}`)
+export const bookInfo = id => get(`/api/detail/${id}`)
 
 /**
  * 求购
  */
-export const wantBook = data => post('/want', data)
+export const wantBook = data => post('/api/want', data)
 
 /**
  * 发送消息
  */
-export const sendMessage = data => post('/send', data)
+export const sendMessage = data => post('/api/message/send', data)
 
 /**
  * 查看消息
  */
-export const getMessage = data => get('/box', data)
+export const getMessage = data => get('/api/message/box', data)
 
 /**
  * 修改信息
  */
-export const changeInfo = data => post('/home/change', data)
+export const changeInfo = data => post('/api/home/change', data)
+
+/**
+ * 订单信息
+ */
+export const orderManage = () => get('/api/home/order')
+
+/**
+ * 求购信息
+ */
+export const wantManage = () => get('/api/home/want')
+
+/**
+ * 全部已读
+ */
+export const readAll = () => get('/api/message/readall')

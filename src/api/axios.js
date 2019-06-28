@@ -31,7 +31,6 @@ axios.interceptors.response.use(
       case 401:
         console.log('Login Required!')
         break
-
       default:
       }
     }

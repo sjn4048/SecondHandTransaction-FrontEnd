@@ -10,6 +10,7 @@
         label="用户名"
       >
         <a-input
+          disabled
           v-decorator="[
               'username',
               {
@@ -43,7 +44,7 @@
       >
         <a-input
           v-decorator="[
-              'password',
+              'old_password',
               {
                 rules: [{
                   required: true, messageBrief: 'Please input your password!',
@@ -144,23 +145,8 @@
 <script>
   import {changeInfo, userHome} from '@/api/api'
   import global from '@/components/GlobalStyle'
+  import globalD from '@/components/GlobalData'
   const sendOptions = ['邮寄运送', '线下交易']
-
-  const residences = [{
-    value: 'zhejiang',
-    label: '浙江',
-    children: [{
-      value: 'hangzhou',
-      label: '杭州',
-      children: [{
-        value: 'zijingang',
-        label: '浙江大学 紫金港校区'
-      }, {
-        value: 'yuquan',
-        label: '浙江大学 玉泉校区'
-      }]
-    }]
-  }]
 
   export default {
     data () {
@@ -171,7 +157,7 @@
         confirmDirty: false,
         currentInfo: null,
         checkedList: null,
-        residences,
+        residences: globalD.residences,
         sendOptions,
         autoCompleteResult: [],
         formItemLayout: global.formItemLayout,
@@ -210,8 +196,8 @@
         e.preventDefault()
         this.form.validateFieldsAndScroll((err, values) => {
           if (!err) {
-            values['delivery'] = values.send.includes(sendOptions[0])
-            values['face2face'] = values.send.includes(sendOptions[1])
+            values['delivery'] = values.send.includes(sendOptions[0]) ? 1 : 0
+            values['face2face'] = values.send.includes(sendOptions[1]) ? 1 : 0
             console.log(values)
             changeInfo(values).then(res => {
               if (res.status === 1) {
@@ -247,7 +233,7 @@
       changeSuccess () {
       },
       handleChange (e) {
-        this.checkAgreement = e.target.checked
+        this.checkAgreement = e.target.checked ? 1 : 0
       }
     }
   }

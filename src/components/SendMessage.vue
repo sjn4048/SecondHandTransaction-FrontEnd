@@ -12,6 +12,7 @@
               {rules: [{ required: true, messageBrief: '请输入接收者用户名' }]}
             ]"
             type="text"
+            v-model="receiver"
             placeholder="Username"
             @change="handleUserChange"
           >
@@ -76,6 +77,9 @@
       messageType: function () {
         return this.success ? 'success' : 'error'
       }
+    },
+    mounted () {
+      this.receiver = this.$route.query.receiver
     },
     methods: {
       handleSubmit () {

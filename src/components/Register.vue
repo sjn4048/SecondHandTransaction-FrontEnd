@@ -8,7 +8,7 @@
     >
       <a-form-item
         v-bind="formItemLayout"
-        label="E-mail"
+        label="邮箱"
       >
         <a-input
           v-decorator="[
@@ -26,7 +26,7 @@
         v-bind="formItemLayout"
       >
           <span slot="label">
-            Username&nbsp;
+            用户名&nbsp;
             <a-tooltip title="You will use this name to log in, and this name will be displayed to others.">
               <a-icon type="question-circle-o"></a-icon>
             </a-tooltip>
@@ -41,7 +41,7 @@
       </a-form-item>
       <a-form-item
         v-bind="formItemLayout"
-        label="Password"
+        label="密码"
       >
         <a-input
           v-decorator="[
@@ -58,7 +58,7 @@
       </a-form-item>
       <a-form-item
         v-bind="formItemLayout"
-        label="Confirm Password"
+        label="确认密码"
       >
         <a-input
           v-decorator="[
@@ -76,7 +76,7 @@
       </a-form-item>
       <a-form-item
         v-bind="formItemLayout"
-        label="Habitual Residence"
+        label="居住地址"
       >
         <a-cascader
           v-decorator="[
@@ -91,7 +91,7 @@
       </a-form-item>
       <a-form-item
         v-bind="formItemLayout"
-        label="Phone Number"
+        label="电话号码"
       >
         <a-input
           v-decorator="[
@@ -125,7 +125,7 @@
           :checked="checkAgreement"
           @change="handleChange"
         >
-          I have agreed to register and follow rules here!
+          我同意注册、并遵守本网站的规定
         </a-checkbox>
       </a-form-item>
       <a-form-item v-bind="tailFormItemLayout">
@@ -151,22 +151,7 @@
 <script>
   import {register} from '@/api/api'
   import global from '@/components/GlobalStyle'
-
-  const residences = [{
-    value: 'zhejiang',
-    label: 'Zhejiang',
-    children: [{
-      value: 'hangzhou',
-      label: 'Hangzhou',
-      children: [{
-        value: 'zijingang',
-        label: 'Zijingang Campus, ZJU'
-      }, {
-        value: 'yuquan',
-        label: 'Yuquan Campus, ZJU'
-      }]
-    }]
-  }]
+  import globalD from '@/components/GlobalData'
 
   export default {
     data () {
@@ -175,7 +160,7 @@
         messageDetail: null,
         success: null,
         confirmDirty: false,
-        residences,
+        residences: globalD.residences,
         autoCompleteResult: [],
         // global
         formItemLayout: global.formItemLayout,
